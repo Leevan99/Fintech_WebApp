@@ -1,0 +1,47 @@
+classDiagram
+    class UserModel {
+        +Integer id [PK]
+        +String CF [unique, not null]
+        +String nome [not null]
+        +String cognome [not null]
+        +String email [unique, not null]
+        +String password_hash [not null]
+        +Boolean is_admin [default=False, not null]
+        +set_password(password)
+        +check_password(password)
+        +check_is_admin(user_id)
+    }
+
+    class ContiModel {
+        +Integer id [PK]
+        +String numero_conto [unique, not null]
+        +String nome [not null]
+        +Float saldo [not null]
+        +DateTime data_creazione [not null]
+        +String iban [unique, not null]
+        +Integer user_id [FK to UserModel.id, not null]
+        +generate_N_Conto_iban()
+    }
+
+    class MovimentiModel {
+        +Integer id [PK]
+        +DateTime data [default=datetime.now, not null]
+        +Float importo [not null]
+        +String tipo [not null]
+        +String causale [nullable]
+        +Integer id_conto_mittente [FK to ContiModel.id, nullable]
+        +String iban_mittente [nullable]
+        +String beneficiario [nullable]
+        +Integer id_conto_destinatario [FK to ContiModel.id, nullable]
+        +String iban_destinatario [nullable]
+    }
+
+    class RevokedTokenModel {
+        +Integer id [PK]
+        +String jti [unique, not null]
+        +DateTime created_at [default=datetime.now, not null]
+    }
+
+    UserModel "1" --> "0..*" ContiModel : owns
+    ContiModel "1" --> "0..*" MovimentiModel : mittente
+    ContiModel "1" --> "0..*" MovimentiModel : destinatario

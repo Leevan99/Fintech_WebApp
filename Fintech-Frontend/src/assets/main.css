@@ -1,0 +1,49 @@
+@import './base.css';
+
+body{
+  background-color: rgba(156, 156, 156, 0.13);
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.5rem;
+  font-weight: normal;
+  min-height: 100vh;
+}
+
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 1rem;
+  background-color: var(--nav-background);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+nav a.router-link-exact-active {
+  background-color: var(--nav-active);
+}
+
+nav a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-left: 1px solid var(--color-border);
+  text-decoration: none;
+  color: var(--vt-c-white);
+}
+
+nav a:first-of-type {
+  border: 0;
+}
+
+
+a:hover {
+  background-color: var(--nav-hover);
+}
+
+

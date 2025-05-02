@@ -1,0 +1,43 @@
+erDiagram
+    USERMODEL ||--o{ CONTIMODEL : has
+    CONTIMODEL ||--o{ MOVIMENTIMODEL : as_mittente
+    CONTIMODEL ||--o{ MOVIMENTIMODEL : as_destinatario
+
+    USERMODEL {
+        int id PK
+        string CF "Codice Fiscale, unique"
+        string nome
+        string cognome
+        string email "unique"
+        string password_hash
+        boolean is_admin "default=False"
+    }
+
+    CONTIMODEL {
+        int id PK
+        string numero_conto "unique"
+        string nome
+        float saldo
+        datetime data_creazione
+        string iban "unique"
+        int user_id FK
+    }
+
+    MOVIMENTIMODEL {
+        int id PK
+        datetime data "default=now"
+        float importo
+        string tipo
+        string causale nullable
+        int id_conto_mittente FK nullable
+        string iban_mittente nullable
+        string beneficiario nullable
+        int id_conto_destinatario FK nullable
+        string iban_destinatario nullable
+    }
+
+    REVOKEDTOKENMODEL {
+        int id PK
+        string jti "unique"
+        datetime created_at "default=now"
+    }

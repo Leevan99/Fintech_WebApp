@@ -1,0 +1,30 @@
+# Normalizza gli end-of-line su LF per evitare conflitti tra sistemi operativi
+* text=auto
+
+# File di testo con line endings Unix-style (LF)
+*.js     text eol=lf
+*.ts     text eol=lf
+*.vue    text eol=lf
+*.css    text eol=lf
+*.scss   text eol=lf
+*.html   text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+
+# File binari (evita che Git provi a fare diff)
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.svg    binary
+*.ico    binary
+
+# Impedisce il merge automatico di file lock (lascia entrambi i contenuti durante conflitti)
+package-lock.json merge=union
+pnpm-lock.yaml    merge=union
+yarn.lock         merge=union
+
+# Evita conflitti durante i merge dei file di configurazione di VSCode
+.vscode/* text

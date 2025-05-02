@@ -1,0 +1,49 @@
+# ————————————————
+# Wildcard globali
+# ————————————————
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+.env
+.env.*.local
+
+# ————————————————
+# Python (Backend)
+# ————————————————
+**/__pycache__/
+**/.pytest_cache/
+.venv/
+#VSCode local folder (ma tieni i settings condivisi)
+.vscode/
+instance/
+*.sqlite
+*.db
+/Fintech-Backend/migrations/
+/!Fintech-Backend/alembic.ini
+/Fintech-Backend/dist/
+/Fintech-Backend/build/
+
+# ————————————————
+# Node.js (Frontend)
+# ————————————————
+/Fintech-Frontend/node_modules/
+/Fintech-Frontend/dist/
+/Fintech-Frontend/dist-ssr/
+/Fintech-Frontend/.vite/
+/Fintech-Frontend/cypress/videos/
+/Fintech-Frontend/cypress/screenshots/
+/Fintech-Frontend/*.tsbuildinfo
+
+# ————————————————
+# IDE e progetti
+# ————————————————
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
