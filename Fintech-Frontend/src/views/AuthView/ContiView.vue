@@ -68,7 +68,7 @@ async function createConto(customName) {
 
 onMounted(() => {
   if (authStore.selectedUserId) {
-    apiPathUser.value = `conti/${authStore.selectedUserId}`
+    apiPathUser.value = `conti/${authStore.selectedUserId}/`
   }
   fetchConti()
 })

@@ -124,7 +124,7 @@ function pulisciForm() {
 
 onMounted(() => {
   if(authStore.selectedUserId){
-    apiPathUser.value = `conti/${authStore.selectedUserId}`
+    apiPathUser.value = `conti/${authStore.selectedUserId}/`
   }
   fetchConti()
 })

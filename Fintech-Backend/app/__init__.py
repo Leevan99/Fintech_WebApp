@@ -40,7 +40,7 @@ def create_app():
     # API conti
     api.add_resource(Conti, "/conti/")
     api.add_resource(Conto, "/conto/<int:id>/")
-    api.add_resource(ContiAdmin, "/conti/<int:id>")
+    api.add_resource(ContiAdmin, "/conti/<int:id>/")
 
     # API movimenti
     api.add_resource(Bonifico, "/bonifico/")
