@@ -26,17 +26,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install test tools
+    - name: Verify environment
       working-directory: ./Fintech-Backend
       run: |
-        pip install pytest
+        echo "Python in uso: $(where python)"
+        pip show Flask
+        pip list
 
-    - name: Verify pytest installation
+    - name: Run tests with pytest
       working-directory: ./Fintech-Backend
       run: |
-        python -m pytest --version
-
-    - name: Run tests
-      working-directory: ./Fintech-Backend
-      run: |
-        python -m pytest --maxfail=1 --disable-warnings -q
+        py test.py
