@@ -17,7 +17,7 @@ movimento_args = reqparse.RequestParser()
 movimento_args.add_argument("id_conto", type=int, required=True, help="Il campo ID Conto non può essere vuoto")
 movimento_args.add_argument('importo', type=float, required=True, help="Il campo Importo non può essere vuoto")
 
-# Campi restituiti per i movimenti
+# Campi restituiti per i movimenti 
 movimentiFields = {
         "id": fields.Integer,
         "iban_mittente": fields.String,
