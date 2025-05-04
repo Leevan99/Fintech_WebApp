@@ -135,7 +135,7 @@ class Conto(Resource):
         db.session.commit()
         return conto
 
-    # Elimina un conto specifico dell'utente selezionato se l'utente è un amministratore e il conto non ha saldo
+    # Elimina un conto specifico dell'utente selezionato se l'utente è un amministratore, il conto non ha saldo
     # e non è il conto principale
     @jwt_required()
     def delete(self, id):
