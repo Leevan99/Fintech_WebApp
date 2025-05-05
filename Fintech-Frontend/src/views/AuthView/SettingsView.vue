@@ -12,7 +12,8 @@ const formData = ref({
   cognome: '',
   CF: '',
   email: '',
-  password: ''
+  password: '',
+  is_admin: false,
 });
 const responseMessage = ref('');
 const page = ref(0);
@@ -56,6 +57,7 @@ async function fetchUtente() {
     formData.value.CF = utente.CF
     formData.value.email = utente.email
     formData.value.password = utente.password
+    formData.value.is_admin = utente.is_admin
 
   } catch (err) {
     err.value = err.message
@@ -69,13 +71,13 @@ const submitForm = async () => {
     messageStore.setMessage(null);
 
     // Controllo campi vuoti
-    if (!formData.value.nome || !formData.value.cognome || !formData.value.email || !formData.value.password) {
+    if (!formData.value.nome || !formData.value.cognome || !formData.value.email || !formData.value.CF) {
       messageStore.setMessage('⚠️ Compila tutti i campi!', 3000);
       return;
     }
 
     // Controllo password sicura
-    if (!passwordRegex.test(formData.value.password)) {
+    if (formData.value.password && !passwordRegex.test(formData.value.password)) {
       messageStore.setMessage('⚠️ La password deve contenere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un simbolo!', 5000);
       return;
     }
@@ -104,6 +106,7 @@ const submitForm = async () => {
         CF: formData.value.CF,
         email: formData.value.email,
         password: formData.value.password,
+        is_admin: formData.value.is_admin,
       }),
     });
 
@@ -146,11 +149,17 @@ onMounted(() => {
           {{ passwordStrengthMessage }}
         </label>
         <div class="password-container">
-          <input :type="showPassword ? 'text' : 'password'" id="password" v-model="formData.password" @input="checkPasswordStrength" placeholder="••••••••••" required />
+          <input :type="showPassword ? 'text' : 'password'" id="password" v-model="formData.password" @input="checkPasswordStrength" placeholder="••••••••••" />
           <button type="button" class="toggle-password" @click="togglePasswordVisibility">
             <img :src="showPassword ? '/eye-off.svg' : '/eye.svg'" alt="Toggle Password" />
           </button>
         </div>
+        <div class="is-admin-toggle">
+          <label for="is_admin">Admin:</label>
+          <input type="checkbox" id="is_admin" v-model="formData.is_admin" />
+        </div>
+        <p v-if="formData.is_admin" class="is-admin-true">L'utente avrà accesso alla dashboard admin</p>
+        <p v-else class="is-admin-false">L'utente non avrà accesso alla dashboard admin</p>
 
         <input type="submit" value="Aggiorna dati" />
       </form>
@@ -216,7 +225,9 @@ onMounted(() => {
 }
 
 
-input {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   border: 1px solid #d4d3ce;
   background-color: #eeece7;
   padding: 8px;
@@ -228,7 +239,9 @@ input {
   text-align: center;
 }
 
-input:focus {
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
   outline: none;
   box-shadow: 0px 0px 10px 2px #002147;
 }
@@ -270,5 +283,56 @@ label {
 
 .codice-fiscale {
   text-transform: uppercase;
+}
+.is-admin-toggle {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+/* 1) Rimuovi l’aspetto nativo */
+#is_admin {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* 2) Stato checked */
+#is_admin:checked {
+  background-color: #047e00;
+  border-color: #047e00;
+}
+
+/* 3) Aggiungi il segno di spunta */
+#is_admin:checked::after {
+  content: "✔";
+  color: white;
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  font-size: 14px;
+}
+
+/* 4) Rimuovi outline blu su focus (opzionale) */
+#is_admin:focus {
+  outline: none;
+  box-shadow: 0 0 3px #047e00;
+}
+
+.is-admin-false{
+  font-size: medium;
+  color: rgb(144, 0, 0);
+}
+.is-admin-true{
+  font-size: medium;
+  color: rgb(4, 126, 0);
 }
 </style>

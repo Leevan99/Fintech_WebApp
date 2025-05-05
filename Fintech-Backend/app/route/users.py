@@ -1,9 +1,8 @@
 from datetime import datetime
-import random
 import re
 from flask_restful import Resource, reqparse, fields, marshal_with, abort
 from flask_jwt_extended import get_jwt, jwt_required, create_access_token, get_jwt_identity
-from app.models import ContiModel, RevokedTokenModel, UserModel, db
+from app.models import ContiModel, RevokedTokenModel, UserModel, db, MovimentiModel
 
 # Parser per la registrazione di un utente
 register_args = reqparse.RequestParser()
@@ -12,6 +11,15 @@ register_args.add_argument("cognome", type=str, required=True, help="Il campo Co
 register_args.add_argument("CF", type=str, required=True, help="Il campo CF non può essere vuoto")
 register_args.add_argument("email", type=str, required=True, help="Il campo Email non può essere vuoto")
 register_args.add_argument("password", type=str, required=True, help="Il campo Password non può essere vuoto")
+
+# Parser per la modifica dei dati di un utente
+mod_user_args = reqparse.RequestParser()
+mod_user_args.add_argument("nome", type=str, required=True, help="Il campo Nome non può essere vuoto")
+mod_user_args.add_argument("cognome", type=str, required=True, help="Il campo Cognome non può essere vuoto")
+mod_user_args.add_argument("CF", type=str, required=True, help="Il campo CF non può essere vuoto")
+mod_user_args.add_argument("email", type=str, required=True, help="Il campo Email non può essere vuoto")
+mod_user_args.add_argument("password", type=str, required=False, help="Il campo Password non può essere vuoto")
+mod_user_args.add_argument("is_admin", type=bool, default=False, help="Il campo is_admin non può essere vuoto")
 
 # Parser per la modifica dei dati di un utente
 update_args = reqparse.RequestParser()
@@ -173,7 +181,7 @@ class AdminUser(Resource):
     def patch(self, id):
         current_user_id = get_jwt_identity()
         user = UserModel.query.filter_by(id=current_user_id).first()
-        args = register_args.parse_args()
+        args = mod_user_args.parse_args()
         if user.is_admin == False:  # Se l'utente non è un amministratore
             abort(403, message="Utente non autorizzato")
         else:  # Se l'utente è un amministratore
@@ -186,13 +194,23 @@ class AdminUser(Resource):
                 abort(409, message="Codice fiscale già in uso")
             elif not verifica_codice_fiscale(args["CF"].upper()):
                 abort(400, message="Codice fiscale non valido")
-            elif not password_regex.match(args["password"]):
+            elif args["password"] and not password_regex.match(args["password"]):
                 abort(400, message="La password deve contenere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale")
+            elif args["is_admin"] == True:
+                conti = ContiModel.query.filter_by(user_id=id).all()
+                movimenti = MovimentiModel.query.filter(MovimentiModel.id_conto_mittente.in_([conto.id for conto in conti]) | 
+                                                        MovimentiModel.id_conto_destinatario.in_([conto.id for conto in conti])).all()
+                if movimenti:
+                    abort(409, message="Impossibile elevare l'utente ad amministratore, sono presenti movimenti associati")
+                for conto in conti:
+                    db.session.delete(conto)
             user.nome = args["nome"]
             user.cognome = args["cognome"]
             user.CF = args["CF"].upper()
             user.email = args["email"]
-            user.set_password(args["password"])
+            user.is_admin = args["is_admin"]
+            if args["password"]:
+                user.set_password(args["password"])
             db.session.commit()
         return {"message": "Dati profilo modificati correttamente"}, 200
 
