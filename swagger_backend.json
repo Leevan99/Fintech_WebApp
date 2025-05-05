@@ -1,0 +1,373 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Backend Flask",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/IDbyCF/": {
+      "get": {
+        "summary": "Recupera l'ID utente tramite CF",
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "CF": "RSSMRA85M01H501Z",
+                  "nome": "Marco",
+                  "cognome": "Rossi",
+                  "email": "marco.rossi@example.com",
+                  "saldo": 2500.75
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/user/{id}/": {
+      "get": {
+        "summary": "Ottieni un utente tramite id se sei un admin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "CF": "RSSMRA85M01H501Z",
+                  "nome": "Marco",
+                  "cognome": "Rossi",
+                  "email": "marco.rossi@example.com",
+                  "saldo": 2500.75
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Aggiorna un utente admin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggiornato"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina un utente admin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Eliminato"
+          }
+        }
+      }
+    },
+    "/api/v1/user/": {
+      "get": {
+        "summary": "Ottieni dati utente",
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "CF": "RSSMRA85M01H501Z",
+                  "nome": "Marco",
+                  "cognome": "Rossi",
+                  "email": "marco.rossi@example.com",
+                  "saldo": 2500.75
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/login/": {
+      "post": {
+        "summary": "Login utente",
+        "responses": {
+          "200": {
+            "description": "Login riuscito"
+          }
+        }
+      }
+    },
+    "/api/v1/register/": {
+      "post": {
+        "summary": "Registrazione nuovo utente",
+        "responses": {
+          "201": {
+            "description": "Utente creato"
+          }
+        }
+      }
+    },
+    "/api/v1/logout/": {
+      "post": {
+        "summary": "Logout utente",
+        "responses": {
+          "200": {
+            "description": "Logout riuscito"
+          }
+        }
+      }
+    },
+    "/api/v1/conti/": {
+      "get": {
+        "summary": "Ottieni lista conti",
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "saldo": 2500.75,
+                    "intestatario": "Marco Rossi"
+                  },
+                  {
+                    "id": 2,
+                    "saldo": 1500.5,
+                    "intestatario": "Giulia Verdi"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crea un nuovo conto",
+        "responses": {
+          "201": {
+            "description": "Conto creato"
+          }
+        }
+      }
+    },
+    "/api/v1/conto/{id}/": {
+      "get": {
+        "summary": "Ottieni conto per ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "saldo": 2500.75,
+                  "intestatario": "Marco Rossi"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/conti/{id}/": {
+      "put": {
+        "summary": "Aggiorna conto (admin)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggiornato"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Elimina conto (admin)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Eliminato"
+          }
+        }
+      }
+    },
+    "/api/v1/bonifico/": {
+      "post": {
+        "summary": "Esegui bonifico",
+        "responses": {
+          "200": {
+            "description": "Bonifico eseguito"
+          }
+        }
+      }
+    },
+    "/api/v1/conto/movimenti/{id}/": {
+      "get": {
+        "summary": "Ottieni movimenti conto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "data": "2025-05-01",
+                    "descrizione": "Pagamento utenze",
+                    "importo": -150.25
+                  },
+                  {
+                    "data": "2025-05-03",
+                    "descrizione": "Versamento stipendio",
+                    "importo": 2000.0
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/movimenti/": {
+      "get": {
+        "summary": "Lista di tutti i movimenti",
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "data": "2025-05-01",
+                    "descrizione": "Pagamento utenze",
+                    "importo": -150.25
+                  },
+                  {
+                    "data": "2025-05-03",
+                    "descrizione": "Versamento stipendio",
+                    "importo": 2000.0
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/movimenti/{id}/": {
+      "get": {
+        "summary": "Ottieni movimento admin",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successo",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": "2025-05-01",
+                  "descrizione": "Pagamento utenze",
+                  "importo": -150.25
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/prelievo/": {
+      "post": {
+        "summary": "Effettua un prelievo",
+        "responses": {
+          "200": {
+            "description": "Prelievo effettuato"
+          }
+        }
+      }
+    },
+    "/api/v1/deposito/": {
+      "post": {
+        "summary": "Effettua un deposito",
+        "responses": {
+          "200": {
+            "description": "Deposito effettuato"
+          }
+        }
+      }
+    }
+  }
+}
