@@ -15,7 +15,7 @@ def create_app():
     app.config.from_object(Config)
 
     # CORS per le richieste cross-origin
-    CORS(app, supports_credentials=True)
+    CORS(app, origins=app.config["CORS_ALLOW_ORIGINS"], allow_headers=app.config["CORS_ALLOW_HEADERS"], supports_credentials=app.config["CORS_ALLOW_CREDENTIALS"])
 
     # Inizializza estensioni
     db.init_app(app)
@@ -50,11 +50,6 @@ def create_app():
     api.add_resource(Prelievo, "/prelievo/")
     api.add_resource(Deposito, "/deposito/")
     
-    # Aggiungi le intestazioni CORS a tutte le risposte
-    def add_cors_headers(response):
-        response.headers.add("Access-Control-Allow-Credentials", "true")
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:5173")
-        return response
 
     # Creazione di un amministratore di default se non esiste
     def create_default_admin():
